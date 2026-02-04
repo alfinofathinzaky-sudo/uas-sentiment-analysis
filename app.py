@@ -1,23 +1,5 @@
 import streamlit as st
-import requests
-import os
-
-API_URL = "https://api-inference.huggingface.co/models/w11wo/indonesian-roberta-base-sentiment-classifier"
-
-API_TOKEN = os.getenv("HF_TOKEN")
-
-HEADERS = {
-    "Authorization": f"Bearer {API_TOKEN}"
-}
-
-
-def analisis_sentimen(teks):
-    response = requests.post(
-        API_URL,
-        headers=HEADERS,
-        json={"inputs": teks}
-    )
-    return response.json()
+from textblob import TextBlob
 
 st.set_page_config(page_title="UAS Rekayasa Fitur", layout="centered")
 st.title("Analisis Sentimen Teks")
@@ -29,17 +11,65 @@ if st.button("Analisis Sentimen"):
     if teks.strip() == "":
         st.warning("Teks tidak boleh kosong!")
     else:
-        hasil = analisis_sentimen(teks)
+        blob = TextBlob(teks)
+        polarity = blob.sentiment.polarity
 
-        # CEK JIKA API ERROR / MODEL LOADING
-        if isinstance(hasil, dict) and "error" in hasil:
-            st.error("Model sedang loading atau API error. Silakan coba lagi beberapa saat.")
+        if polarity > 0:
+            sentimen = "Positive"
+        elif polarity < 0:
+            sentimen = "Negative"
         else:
-            try:
-                label = hasil[0][0]["label"]
-                skor = hasil[0][0]["score"]
+            sentimen = "Neutral"
 
-                st.success(f"Hasil Sentimen: {label}")
-                st.info(f"Tingkat Kepercayaan: {skor:.2f}")
-            except Exception as e:
-                st.error("Terjadi kesalahan saat memproses hasil analisis.")
+        st.success(f"Hasil Sentimen: {sentimen}")
+        st.info(f"Nilai Polaritas: {polarity:.2f}")
+import streamlit as st
+from textblob import TextBlob
+
+st.set_page_config(page_title="UAS Rekayasa Fitur", layout="centered")
+st.title("Analisis Sentimen Teks")
+st.write("UAS Rekayasa Fitur – Analisis Sentimen menggunakan API")
+
+teks = st.text_area("Masukkan teks yang ingin dianalisis:")
+
+if st.button("Analisis Sentimen"):
+    if teks.strip() == "":
+        st.warning("Teks tidak boleh kosong!")
+    else:
+        blob = TextBlob(teks)
+        polarity = blob.sentiment.polarity
+
+        if polarity > 0:
+            sentimen = "Positive"
+        elif polarity < 0:
+            sentimen = "Negative"
+        else:
+            sentimen = "Neutral"
+
+        st.success(f"Hasil Sentimen: {sentimen}")
+        st.info(f"Nilai Polaritas: {polarity:.2f}")
+import streamlit as st
+from textblob import TextBlob
+
+st.set_page_config(page_title="UAS Rekayasa Fitur", layout="centered")
+st.title("Analisis Sentimen Teks")
+st.write("UAS Rekayasa Fitur – Analisis Sentimen menggunakan API")
+
+teks = st.text_area("Masukkan teks yang ingin dianalisis:")
+
+if st.button("Analisis Sentimen"):
+    if teks.strip() == "":
+        st.warning("Teks tidak boleh kosong!")
+    else:
+        blob = TextBlob(teks)
+        polarity = blob.sentiment.polarity
+
+        if polarity > 0:
+            sentimen = "Positive"
+        elif polarity < 0:
+            sentimen = "Negative"
+        else:
+            sentimen = "Neutral"
+
+        st.success(f"Hasil Sentimen: {sentimen}")
+        st.info(f"Nilai Polaritas: {polarity:.2f}")
