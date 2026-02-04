@@ -2,7 +2,8 @@ import streamlit as st
 import requests
 import os
 
-API_URL = "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english"
+API_URL = "https://api-inference.huggingface.co/models/w11wo/indonesian-roberta-base-sentiment-classifier"
+
 API_TOKEN = os.getenv("HF_TOKEN")
 
 HEADERS = {
