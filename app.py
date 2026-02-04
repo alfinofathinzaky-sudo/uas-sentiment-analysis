@@ -1,8 +1,14 @@
 import streamlit as st
 import requests
+import os
 
 API_URL = "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english"
-HEADERS = {"Authorization": "Bearer ISI_TOKEN_HUGGINGFACE_KAMU"}
+API_TOKEN = os.getenv("HF_TOKEN")
+
+HEADERS = {
+    "Authorization": f"Bearer {API_TOKEN}"
+}
+
 
 def analisis_sentimen(teks):
     response = requests.post(
