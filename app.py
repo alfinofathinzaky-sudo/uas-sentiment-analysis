@@ -29,8 +29,16 @@ if st.button("Analisis Sentimen"):
         st.warning("Teks tidak boleh kosong!")
     else:
         hasil = analisis_sentimen(teks)
-        label = hasil[0][0]["label"]
-        skor = hasil[0][0]["score"]
 
-        st.success(f"Hasil Sentimen: {label}")
-        st.info(f"Tingkat Kepercayaan: {skor:.2f}")
+        # CEK JIKA API ERROR / MODEL LOADING
+        if isinstance(hasil, dict) and "error" in hasil:
+            st.error("Model sedang loading atau API error. Silakan coba lagi beberapa saat.")
+        else:
+            try:
+                label = hasil[0][0]["label"]
+                skor = hasil[0][0]["score"]
+
+                st.success(f"Hasil Sentimen: {label}")
+                st.info(f"Tingkat Kepercayaan: {skor:.2f}")
+            except Exception as e:
+                st.error("Terjadi kesalahan saat memproses hasil analisis.")
